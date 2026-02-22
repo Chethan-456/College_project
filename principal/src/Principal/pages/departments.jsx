@@ -137,10 +137,10 @@ const Departments = () => {
   ];
 
   return (
-    <div className="p-6 bg-[#f9f9f9] min-h-screen">
+    <div className=" bg-[#fafafa] min-h-screen">
 
       {/* ✅ Header */}
-      <div className="bg-[#ffffff] flex items-center gap-3 mb-5">
+      <div className="bg-white flex items-center gap-3 w-full sticky top-0 z-20 px-4 py-3 ">
         <ArrowLeft
           size={20}
           className="cursor-pointer"
@@ -153,11 +153,11 @@ const Departments = () => {
           </p>
         </div>
       </div>
-
+    <div className="p-6">
       {/* ✅ Top Banner */}
       <div className="bg-[#f3f7ff] rounded-xl py-6 mb-5 flex flex-col items-center justify-center border border-[#eef2ff]">
 
-  <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center shadow-sm mb-3">
+  <div className="w-12 h-12 rounded-xl bg-linear-to-r from-indigo-500 to-purple-500 flex items-center justify-center shadow-sm mb-3">
     <GraduationCap size={22} color="white" />
   </div>
 
@@ -239,24 +239,25 @@ const Departments = () => {
       </div>
 
       {/* ✅ Bottom Summary */}
-      <div className="grid grid-cols-3 gap-4 mt-7">
+      <div className="grid grid-cols-4 gap-4 mt-7">
         <div className="bg-white rounded-xl p-4 shadow-sm text-center">
-          <p className="text-xs text-gray-400">Total Departments</p>
           <p className="text-lg font-semibold text-blue-600">9</p>
+          <p className="text-xs text-gray-400">Total Departments</p>
         </div>
         <div className="bg-white rounded-xl p-4 shadow-sm text-center">
-          <p className="text-xs text-gray-400">Total Students</p>
           <p className="text-lg font-semibold text-green-600">1215</p>
+          <p className="text-xs text-gray-400">Total Students</p>
         </div>
         <div className="bg-white rounded-xl p-4 shadow-sm text-center">
-          <p className="text-xs text-gray-400">Total Faculty</p>
           <p className="text-lg font-semibold text-purple-600">83</p>
+          <p className="text-xs text-gray-400">Total Faculty</p>
         </div>
         <div className="bg-white rounded-xl p-4 shadow-sm text-center">
-          <p className="text-xs text-gray-400">Total Courses</p>
           <p className="text-lg font-semibold text-orange-600">64</p>
+          <p className="text-xs text-gray-400">Total Courses</p>
         </div>
       </div>
+    </div>
     </div>
   );
 };

@@ -10,9 +10,10 @@ const NewMessageModal = ({ isOpen, onClose }) => {
 
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 bg-transparent">
+    <div className="flex items-center justify-center h-full">
       {/* Modal Container */}
-      <div className="bg-white rounded-lg w-[600px] p-6 shadow-lg animate-scaleIn">
+      <div className="bg-white w-[650px]  max-w-[95%] rounded-2xl shadow-2xl p-8 flex flex-col ">
 
         {/* Header */}
         <div className="flex justify-between items-center mb-4">
@@ -33,7 +34,7 @@ const NewMessageModal = ({ isOpen, onClose }) => {
         </div>
 
         {/* Send To Section */}
-        <div className="mt-6">
+        <div className="mt-6 space-y-6 ">
           <label className="text-sm font-semibold text-gray-700">Send To:</label>
 
           <div className="grid grid-cols-2 gap-3 mt-2">
@@ -101,6 +102,7 @@ const NewMessageModal = ({ isOpen, onClose }) => {
           </button>
         </div>
       </div>
+    </div>
     </div>
   );
 };

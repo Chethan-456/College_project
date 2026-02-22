@@ -77,7 +77,7 @@ const ManagementDashboard = () => {
       tag: "Multiple Sections",
       icon: Briefcase,
       gradient: "from-[#434343] to-[#000000]", // dark gray gradient
-      path:"/administrationstop"
+      path:"/administration"
     },
   ];
 
@@ -98,7 +98,7 @@ const ManagementDashboard = () => {
               {/* Left side */}
               <div className="flex flex-col items-start gap-4">
                 <div
-                  className={`bg-gradient-to-r ${sec.gradient} rounded-xl w-12 h-12 flex items-center justify-center`}
+                  className={`bg-linear-to-r ${sec.gradient} rounded-xl w-12 h-12 flex items-center justify-center`}
                 >
                   <Icon size={24} color="white" />
                 </div>
