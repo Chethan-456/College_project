@@ -31,7 +31,7 @@ const RoleSelection = () => {
       desc: "Learners & Campus Members",
       letter: "S",
       gradient: "from-pink-400 to-purple-500",
-      path: "/student",
+      path: "/student/login",
     },
   ];
 
