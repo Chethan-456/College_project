@@ -17,7 +17,10 @@ import AdminLogin from "./Principal/pages/Principallogin";
 
 // hod page
 import HODLogin from "./HOD/pages/HODlogin";
-
+import HODDashboard from "./HOD/pages/HODDashboard";
+import HODFaculty from "./HOD/pages/HODfaculty";
+import HODTimetable from "./HOD/pages/HODTimetable";
+import HODNotification from "./HOD/pages/HODNotification";
 // faculty pages
 import Facultylogin from "./Faculty/pages/FacultyLogin";
 import FacultyDashboard from "./Faculty/pages/Facultydashboard";
@@ -27,6 +30,7 @@ import FacultyNotificatins from "./Faculty/pages/Facultynotification";
 import FacultyPlanner from "./Faculty/pages/Facultyplanner";
 import FacultyMessage from "./Faculty/pages/Facultymessage";
 import FacultyReg from "./Faculty/pages/Facultyregistration";
+
 
 
 
@@ -50,6 +54,10 @@ const App = () => {
         <Route path="/notifications" element={<Notifications />} />
         {/* HOD PAGES */}
         <Route path="/hod" element={<HODLogin />} />
+        <Route path="/dashboard/hod" element={<HODDashboard />} />
+        <Route path="/faculty/hod" element={<HODFaculty />} />
+        <Route path="/timetable/hod" element={<HODTimetable />} />
+        <Route path="/notifications/hod" element={<HODNotification />} />
           {/* Faulty pages */}
         <Route path="/faculty" element={<Facultylogin />} /> 
         <Route path="/dashboard/faculty" element={<FacultyDashboard />} />

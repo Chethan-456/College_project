@@ -38,7 +38,7 @@ const HODLogin = () => {
 
     if (userId === "hod123" && password === "password123") {
       alert("Login successful");
-      navigate("/dashboard");
+      navigate("/dashboard/hod");
     } else {
       setError("Invalid credentials");
     }
