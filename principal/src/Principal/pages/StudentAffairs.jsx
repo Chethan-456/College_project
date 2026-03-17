@@ -44,6 +44,7 @@ const Ico = {
   family: <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#374151" strokeWidth="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>,
 };
 
+// ── STUDENT CARD ──────────────────────────────────────────────────
 function StudentCard({ s }) {
   const ds = DEPT_STYLES[s.dept] || { bg:"#f3f4f6", color:"#374151", dot:"#9ca3af", bar:"#9ca3af" };
   const cgpaColor = s.cgpa >= 9 ? "#7c3aed" : s.cgpa >= 8 ? "#2563eb" : "#f97316";
@@ -84,8 +85,8 @@ function StudentCard({ s }) {
         </div>
 
         <div style={{ marginBottom:"8px" }}>
-          {[[Ico.phone, s.phone],[Ico.mail, s.email],[Ico.loc, s.addr],[Ico.cal, `DOB: ${s.dob}`]].map(([icon, val], i) => (
-            <div key={i} style={{ display:"flex", alignItems:"center", gap:"6px", fontSize:"11px", color:"#6b7280", marginBottom: i < 3 ? "4px" : 0 }}>
+          {[[Ico.phone,s.phone],[Ico.mail,s.email],[Ico.loc,s.addr],[Ico.cal,`DOB: ${s.dob}`]].map(([icon,val],i)=>(
+            <div key={i} style={{ display:"flex", alignItems:"center", gap:"6px", fontSize:"11px", color:"#6b7280", marginBottom:i<3?"4px":0 }}>
               {icon}{val}
             </div>
           ))}
@@ -108,8 +109,8 @@ function StudentCard({ s }) {
           [fmt(s.paid),    "#16a34a", "Paid"],
           [fmt(s.pending), pendColor, "Pending"],
           [fmt(s.total),   "#2563eb", "Total"],
-        ].map(([val, color, lbl], i) => (
-          <div key={i} style={{ padding:"7px 6px", textAlign:"center", borderRight: i < 2 ? "1px solid #f3f4f6" : "none" }}>
+        ].map(([val,color,lbl],i)=>(
+          <div key={i} style={{ padding:"7px 6px", textAlign:"center", borderRight:i<2?"1px solid #f3f4f6":"none" }}>
             <p style={{ fontSize:"12px", fontWeight:600, color, margin:"0 0 1px" }}>{val}</p>
             <p style={{ fontSize:"10px", color:"#9ca3af", margin:0 }}>{lbl}</p>
           </div>
@@ -127,12 +128,13 @@ function StudentCard({ s }) {
   );
 }
 
+// ── DROPDOWN ──────────────────────────────────────────────────────
 function DropdownSelect({ value, options, onChange }) {
   const [open, setOpen] = useState(false);
   return (
-    <div style={{ position:"relative" }} onClick={e => e.stopPropagation()}>
+    <div style={{ position:"relative" }} onClick={e=>e.stopPropagation()}>
       <button
-        onClick={() => setOpen(!open)}
+        onClick={()=>setOpen(!open)}
         style={{ display:"flex", alignItems:"center", gap:"7px", border:"1px solid #e5e7eb", borderRadius:"7px", padding:"7px 12px", fontSize:"12px", color:"#374151", background:"white", cursor:"pointer", minWidth:"150px", justifyContent:"space-between", fontFamily:"inherit" }}
       >
         <span>{value}</span>
@@ -140,11 +142,9 @@ function DropdownSelect({ value, options, onChange }) {
       </button>
       {open && (
         <div style={{ position:"absolute", top:"calc(100% + 3px)", right:0, background:"white", border:"1px solid #e5e7eb", borderRadius:"10px", minWidth:"180px", zIndex:100, overflow:"hidden", boxShadow:"0 4px 14px rgba(0,0,0,0.08)" }}>
-          {options.map(o => (
-            <div key={o}
-              onClick={() => { onChange(o); setOpen(false); }}
-              style={{ padding:"8px 13px", fontSize:"12px", cursor:"pointer", color: value===o ? "#2563eb" : "#374151", fontWeight: value===o ? 600 : 400, background: value===o ? "#f0f7ff" : "white" }}
-            >
+          {options.map(o=>(
+            <div key={o} onClick={()=>{onChange(o);setOpen(false);}}
+              style={{ padding:"8px 13px", fontSize:"12px", cursor:"pointer", color:value===o?"#2563eb":"#374151", fontWeight:value===o?600:400, background:value===o?"#f0f7ff":"white" }}>
               {o}
             </div>
           ))}
@@ -154,76 +154,92 @@ function DropdownSelect({ value, options, onChange }) {
   );
 }
 
-export default function StudentManagement() {
+// ── MAIN ──────────────────────────────────────────────────────────
+export default function StudentManagement({ onBack }) {
   const [search, setSearch] = useState("");
   const [dept,   setDept]   = useState("All Departments");
   const [year,   setYear]   = useState("All Years");
 
-  const filtered = useMemo(() => STUDENTS.filter(s => {
-    const md = dept === "All Departments" || s.dept === dept;
-    const my = year === "All Years"       || s.year === year;
+  const filtered = useMemo(()=>STUDENTS.filter(s=>{
+    const md = dept==="All Departments" || s.dept===dept;
+    const my = year==="All Years"       || s.year===year;
     const q  = search.toLowerCase();
     const mq = !q || s.name.toLowerCase().includes(q) || s.roll.toLowerCase().includes(q) || s.email.toLowerCase().includes(q) || s.phone.includes(q);
     return md && my && mq;
-  }), [search, dept, year]);
+  }),[search,dept,year]);
 
-  const totalPending = STUDENTS.reduce((a, s) => a + s.pending, 0);
+  const totalPending = STUDENTS.reduce((a,s)=>a+s.pending,0);
+
+  // back handler — uses prop if provided, otherwise browser history
+  const handleBack = () => {
+    if (typeof onBack === "function") onBack();
+    else window.history.back();
+  };
 
   return (
-    <div style={{ minHeight:"100vh", background:"#f3f4f6", fontFamily:"'Segoe UI',sans-serif" }} onClick={() => {}}>
+    <div style={{ minHeight:"100vh", background:"#f3f4f6", fontFamily:"'Segoe UI',sans-serif" }}>
 
-      {/* Topbar — back button is visual only, no navigation */}
+      {/* ── TOP NAV ── */}
       <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"12px 24px", background:"white", borderBottom:"1px solid #e5e7eb", position:"sticky", top:0, zIndex:20 }}>
-        <div style={{ display:"flex", alignItems:"center", gap:"10px" }}>
-          <span style={{ display:"flex", alignItems:"center", color:"#9ca3af" }}>{Ico.back}</span>
-          <div style={{ marginLeft:"4px" }}>
+
+        <div style={{ display:"flex", alignItems:"center", gap:"16px" }}>
+
+          {/* ✅ Back to Principal Dashboard button */}
+          <button
+            onClick={handleBack}
+            style={{ display:"flex", alignItems:"center", gap:"6px", background:"none", border:"none", cursor:"pointer", color:"#6b7280", fontSize:"12px", fontWeight:500, padding:0, whiteSpace:"nowrap" }}
+          >
+            {Ico.back}
+            Back to Principal Dashboard
+          </button>
+
+          <div style={{ width:"1px", height:"22px", background:"#e5e7eb" }} />
+
+          <div>
             <p style={{ fontSize:"13.5px", fontWeight:600, color:"#111827", margin:0 }}>Student Management</p>
             <p style={{ fontSize:"11px", color:"#9ca3af", margin:0 }}>Manage all student details and records</p>
           </div>
         </div>
+
         <span style={{ fontSize:"11px", fontWeight:600, padding:"3px 11px", borderRadius:"20px", background:"#eff6ff", color:"#2563eb" }}>
-          {filtered.length} Student{filtered.length !== 1 ? "s" : ""}
+          {filtered.length} Student{filtered.length!==1?"s":""}
         </span>
       </div>
 
-      {/* Toolbar */}
+      {/* ── TOOLBAR ── */}
       <div style={{ display:"flex", alignItems:"center", gap:"10px", padding:"11px 24px", background:"white", borderBottom:"1px solid #e5e7eb" }}>
         <div style={{ flex:1, position:"relative" }}>
           <span style={{ position:"absolute", left:"9px", top:"50%", transform:"translateY(-50%)", color:"#9ca3af" }}>{Ico.search}</span>
           <input
-            value={search} onChange={e => setSearch(e.target.value)}
-            placeholder="Search students by name, roll no, email, or phone.."
-            style={{ width:"100%", padding:"7px 12px 7px 32px", border:"1px solid #e5e7eb", borderRadius:"7px", fontSize:"12px", color:"#1f2937", outline:"none", fontFamily:"inherit" }}
+            value={search} onChange={e=>setSearch(e.target.value)}
+            placeholder="Search students by name, roll no, email, or phone..."
+            style={{ width:"100%", padding:"7px 12px 7px 32px", border:"1px solid #e5e7eb", borderRadius:"7px", fontSize:"12px", color:"#1f2937", outline:"none", fontFamily:"inherit", boxSizing:"border-box" }}
           />
         </div>
-        <DropdownSelect value={dept} options={DEPTS} onChange={setDept} />
-        <DropdownSelect value={year} options={YEARS} onChange={setYear} />
+        <DropdownSelect value={dept} options={DEPTS} onChange={setDept}/>
+        <DropdownSelect value={year} options={YEARS} onChange={setYear}/>
         <button style={{ display:"flex", alignItems:"center", gap:"5px", border:"1px solid #e5e7eb", borderRadius:"7px", padding:"7px 12px", fontSize:"12px", color:"#6b7280", background:"white", cursor:"pointer", fontFamily:"inherit" }}>
           {Ico.filter} Filter
         </button>
       </div>
 
-      {/* Grid */}
+      {/* ── STUDENT GRID ── */}
       <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"14px", padding:"14px 24px" }}>
         {filtered.length
-          ? filtered.map((s, i) => <StudentCard key={i} s={s} />)
+          ? filtered.map((s,i)=><StudentCard key={i} s={s}/>)
           : <div style={{ gridColumn:"span 3", textAlign:"center", padding:"40px", color:"#9ca3af", fontSize:"12.5px" }}>No students found.</div>
         }
       </div>
 
-      {/* Stats */}
+      {/* ── STATS FOOTER ── */}
       <div style={{ background:"white", borderTop:"1px solid #e5e7eb", padding:"18px 24px" }}>
-        <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:"14px" }}>
-          <p style={{ fontSize:"12.5px", fontWeight:600, color:"#1f2937", margin:0 }}>Student Statistics</p>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f97316" strokeWidth="1.8"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-        </div>
         <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", textAlign:"center" }}>
           {[
-            ["14",    "Total Students",  "#2563eb"],
-            ["8.5",   "Avg CGPA",        "#16a34a"],
-            ["93%",   "Avg Attendance",  "#7c3aed"],
-            [`₹${Math.round(totalPending/1000)}K`, "Pending Fees", "#ea580c"],
-          ].map(([v, l, c]) => (
+            ["14",   "Total Students",  "#2563eb"],
+            ["8.5",  "Avg CGPA",        "#16a34a"],
+            ["93%",  "Avg Attendance",  "#7c3aed"],
+            [`₹${Math.round(totalPending/1000)}K`,"Pending Fees","#ea580c"],
+          ].map(([v,l,c])=>(
             <div key={l}>
               <p style={{ fontSize:"22px", fontWeight:700, color:c, margin:"0 0 3px" }}>{v}</p>
               <p style={{ fontSize:"11px", color:"#9ca3af", margin:0 }}>{l}</p>
