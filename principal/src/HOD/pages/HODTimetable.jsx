@@ -1,4 +1,5 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import AIAssistant from "../../Principal/components/AIAssistant";
 
 // ── SVG Icons ──────────────────────────────────────────────────────
 const I = {

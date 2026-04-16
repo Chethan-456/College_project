@@ -1,4 +1,5 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import AIAssistant from "../../Principal/components/AIAssistant";
 
 const I = {
   back:      ()=><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>,
@@ -180,7 +181,19 @@ function Toast({msg,color="#16a34a"}){
   return <div style={{position:"fixed",bottom:"28px",right:"28px",background:color,color:"#fff",padding:"10px 20px",borderRadius:"7px",fontSize:"12.5px",fontWeight:600,boxShadow:"0 4px 16px rgba(0,0,0,.18)",zIndex:2000}}>{msg}</div>;
 }
 
-function TopBar({unreadCount,onBellClick}){
+function TopBar({ unreadCount, onBellClick}) {
+  const [showAI, setShowAI] = useState(false);
+   useEffect(() => {
+    if (showAI) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [showAI]);
   return(
     <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",background:"#fff",borderBottom:"1px solid #e2e5ea",padding:"10px 28px"}}>
       <div>
@@ -193,10 +206,12 @@ function TopBar({unreadCount,onBellClick}){
           {I.bellTop()}
           {unreadCount>0&&<span style={{position:"absolute",top:"-6px",right:"-7px",background:"#ef4444",color:"#fff",borderRadius:"50%",fontSize:"9px",width:"15px",height:"15px",display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700}}>{unreadCount}</span>}
         </div>
-        <button style={{display:"flex",alignItems:"center",gap:"4px",background:"none",border:"none",cursor:"pointer",color:"#2563eb",fontSize:"12px",fontWeight:500}}>{I.bot()} AI Assistant</button>
+        <button onClick={() => setShowAI(true)} style={{display:"flex",alignItems:"center",gap:"4px",background:"none",border:"none",cursor:"pointer",color:"#2563eb",fontSize:"12px",fontWeight:500}}>{I.bot()} AI Assistant</button>
         <button style={{display:"flex",alignItems:"center",gap:"4px",background:"none",border:"none",cursor:"pointer",color:"#ef4444",fontSize:"12px",fontWeight:500}}>{I.logout()} Logout</button>
       </div>
+      <AIAssistant showAI={showAI} setShowAI={setShowAI} />
     </div>
+    
   );
 }
 
@@ -601,6 +616,7 @@ function ReportsPage(){
         )}
       </div>
     </div>
+    
   );
 }
 
