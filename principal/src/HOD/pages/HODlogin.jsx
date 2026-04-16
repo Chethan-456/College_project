@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import AIAssistant from "../../Principal/components/AIAssistant";
 import { ArrowLeft, Eye, EyeOff, RefreshCw } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 

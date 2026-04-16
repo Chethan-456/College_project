@@ -1,4 +1,5 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import AIAssistant from "../../Principal/components/AIAssistant";
 
 // ── tiny SVG icon kit ──────────────────────────────────────────────
 const I = {
@@ -176,24 +177,37 @@ function Sidebar() {
 }
 
 // ── Top bar (shared) ───────────────────────────────────────────────
-function TopBar() {
-  return (
-    <div style={S.topbar}>
+function TopBar({ unreadCount, onBellClick}) {
+  const [showAI, setShowAI] = useState(false);
+   useEffect(() => {
+    if (showAI) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [showAI]);
+  return(
+    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",background:"#fff",borderBottom:"1px solid #e2e5ea",padding:"10px 28px"}}>
       <div>
-        <div style={{ fontWeight:700, fontSize:"15px", color:"#1a1a2e" }}>HOD Dashboard</div>
-        <div style={{ color:"#888", fontSize:"11px" }}>BCA Department Management</div>
+        <div style={{fontWeight:700,fontSize:"15px",color:"#1a1a2e"}}>HOD Dashboard</div>
+        <div style={{color:"#888",fontSize:"11px"}}>BCA Department Management</div>
       </div>
-      <div style={{ display:"flex", alignItems:"center", gap:"18px" }}>
-        <div style={{ border:"2px solid #f87171", borderRadius:"5px", padding:"3px 5px", display:"flex", alignItems:"center", cursor:"pointer" }}>{I.chatbox()}</div>
-        <button style={{ ...S.iconBtn, gap:"4px", color:"#444", fontSize:"12px" }}>{I.settings()} Settings</button>
-        <div style={{ position:"relative", cursor:"pointer" }}>
+      <div style={{display:"flex",alignItems:"center",gap:"18px"}}>
+        <button style={{display:"flex",alignItems:"center",gap:"4px",background:"none",border:"none",cursor:"pointer",color:"#444",fontSize:"12px"}}>{I.settings()} Settings</button>
+        <div onClick={onBellClick} style={{position:"relative",cursor:"pointer"}}>
           {I.bellTop()}
-          <span style={{ position:"absolute", top:"-6px", right:"-7px", background:"#ef4444", color:"#fff", borderRadius:"50%", fontSize:"9px", width:"15px", height:"15px", display:"flex", alignItems:"center", justifyContent:"center", fontWeight:700 }}>3</span>
+          {unreadCount>0&&<span style={{position:"absolute",top:"-6px",right:"-7px",background:"#ef4444",color:"#fff",borderRadius:"50%",fontSize:"9px",width:"15px",height:"15px",display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700}}>{unreadCount}</span>}
         </div>
-        <button style={{ ...S.iconBtn, gap:"4px", color:"#2563eb", fontSize:"12px", fontWeight:500 }}>{I.bot()} AI Assistant</button>
-        <button style={{ ...S.iconBtn, gap:"4px", color:"#ef4444", fontSize:"12px", fontWeight:500 }}>{I.logout()} Logout</button>
+        <button onClick={() => setShowAI(true)} style={{display:"flex",alignItems:"center",gap:"4px",background:"none",border:"none",cursor:"pointer",color:"#2563eb",fontSize:"12px",fontWeight:500}}>{I.bot()} AI Assistant</button>
+        <button style={{display:"flex",alignItems:"center",gap:"4px",background:"none",border:"none",cursor:"pointer",color:"#ef4444",fontSize:"12px",fontWeight:500}}>{I.logout()} Logout</button>
       </div>
+      <AIAssistant showAI={showAI} setShowAI={setShowAI} />
     </div>
+    
   );
 }
 
